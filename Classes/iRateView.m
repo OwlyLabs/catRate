@@ -142,18 +142,7 @@ static NSString *id_application_key = @"trackIdKey";
 
 - (void) didRotate:(NSNotification *)notification
 {  
-    return;
-    
-    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
-    
-    
-    [self setNeedsDisplay];
-    
-    
-    if (orientation == UIDeviceOrientationLandscapeLeft)
-    {
-        NSLog(@"Landscape Left!");
-    }
+
 }
 
 
