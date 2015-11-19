@@ -30,7 +30,7 @@ int show_interval_after_cancel = 60*60*24*4; // интервал после на
 
 int limited_count_launches = 100;
 
-bool debug = NO;
+bool debug = YES;
 
 static iRateMind *instance = nil;
 

@@ -7,7 +7,7 @@
 
 #import "iRateView.h"
 #import "iRateMind.h"
-#import "UIDevice+machine.h"
+#import <sys/utsname.h>
 
 #define MainScreenWidht (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
 
@@ -67,10 +67,10 @@ static NSString *id_application_key = @"trackIdKey";
     cur_stars = 0;
     stateAlert = popup_state_empty;
     
-    /*[YMMYandexMetrica reportEvent:@"CatRate"
+    [YMMYandexMetrica reportEvent:@"CatRate"
                         onFailure:^(NSError *error) {
                             NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
-                        }];*/
+                        }];
     
 }
 
@@ -114,23 +114,11 @@ static NSString *id_application_key = @"trackIdKey";
     
     
     
-    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
-        alphaView.backgroundColor = [UIColor clearColor];
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = alphaView.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        blurEffectView.alpha = 0.85;
-        [alphaView addSubview:blurEffectView];
-    } else {
-        alphaView.backgroundColor = [UIColor blackColor];
-        alphaView.alpha = 0.4;
-    }
-    
     
     
     //alphaView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-
+    alphaView.backgroundColor = [UIColor blackColor];
+    alphaView.alpha = 0.4;
     [alphaView removeFromSuperview];
     
     
@@ -607,7 +595,7 @@ float distance = 10.0;
 -(void)rateApplication{
     //NSLog(@"rateApplication");
     
-    /*[YMMYandexMetrica reportEvent:@"CatRate-AppStore"
+    [YMMYandexMetrica reportEvent:@"CatRate-AppStore"
                         onFailure:^(NSError *error) {
                             NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
                         }
@@ -617,7 +605,7 @@ float distance = 10.0;
     [YMMYandexMetrica reportEvent:[NSString stringWithFormat:@"CatRate-%i",cur_stars]
                         onFailure:^(NSError *error) {
                             NSLog(@"REPORT ERROR: %@", [error localizedDescription]);}
-     ];*/
+     ];
     
     
     
@@ -664,10 +652,10 @@ float distance = 10.0;
 - (void)supportMail{
     if ([MFMailComposeViewController canSendMail]) {
         
-        /*[YMMYandexMetrica reportEvent:@"CatRate-Contact"
+        [YMMYandexMetrica reportEvent:@"CatRate-Contact"
                             onFailure:^(NSError *error) {
                                 NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
-                            }];*/
+                            }];
         
         
         MFMailComposeViewController* mailController = [[MFMailComposeViewController alloc] init];
@@ -677,7 +665,14 @@ float distance = 10.0;
         [mailController.navigationBar setTintColor:RGB(39, 175, 195)];
         
         NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
-        [seriaDevice appendString:[[UIDevice currentDevice] machine]];
+        
+        NSString *deviceType;
+        struct utsname systemInfo;
+        uname(&systemInfo);
+        deviceType = [NSString stringWithCString:systemInfo.machine
+                                        encoding:NSUTF8StringEncoding];
+        
+        [seriaDevice appendString:deviceType];
         
         [seriaDevice replaceOccurrencesOfString:@"," withString:@"."
                                         options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
