@@ -180,13 +180,13 @@ static NSString *id_application_key = @"trackIdKey";
             
             
             
-            NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?30.0:20.0]}];
+            NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0]}];
             
             UILabel *like_app = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?-4.5:0, view.frame.size.width, (IS_IPAD)?80:50)];
             
             [like_app setAttributedText:stringForRecom];
             
-            like_app.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?30.0:20.0];
+            like_app.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0];
             like_app.textAlignment = NSTextAlignmentCenter;
             like_app.numberOfLines = 2;
             like_app.textColor = [UIColor colorWithHex:@"189395" alpha:1.0];
@@ -201,7 +201,7 @@ static NSString *id_application_key = @"trackIdKey";
             
             
             thanksTitle.text = [self localizedStringForKey:@"iRateView_what_happened" withDefault:@"Что случилось?"];
-            thanksTitle.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?30:20.0];
+            thanksTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
             thanksTitle.textAlignment = NSTextAlignmentCenter;
             thanksTitle.numberOfLines = 1;
             thanksTitle.textColor = [UIColor colorWithHex:@"189395" alpha:1.0];
@@ -210,13 +210,13 @@ static NSString *id_application_key = @"trackIdKey";
             
             
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?22:15.0]}];
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
             
             UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
             [thanksTitle2 setAttributedText:atrStr];
             
             
-            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?22:15.0];
+            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0];
             thanksTitle2.textAlignment = NSTextAlignmentCenter;
             thanksTitle2.numberOfLines = 2;
             thanksTitle2.textColor = [UIColor colorWithHex:@"5d7185" alpha:1.0];
@@ -228,20 +228,20 @@ static NSString *id_application_key = @"trackIdKey";
             UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?9:0, view.frame.size.width, (IS_IPAD)?30:25)];
             
             thanksTitle.text = [self localizedStringForKey:@"iRateView_good" withDefault:@"Отлично! Спасибо!"];
-            thanksTitle.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?30:20.0];
+            thanksTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
             thanksTitle.textAlignment = NSTextAlignmentCenter;
             thanksTitle.numberOfLines = 1;
             thanksTitle.textColor = [UIColor colorWithHex:@"189395" alpha:1.0];
             [view addSubview:thanksTitle];
             
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?22:15.0]}];
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
             
             UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
             
             [thanksTitle2 setAttributedText:atrStr];
             
-            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?22:15.0];
+            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0];
             thanksTitle2.textAlignment = NSTextAlignmentCenter;
             thanksTitle2.numberOfLines = 3;
             thanksTitle2.textColor = [UIColor colorWithHex:@"5d7185" alpha:1.0];
@@ -402,7 +402,7 @@ float distance = 10.0;
     
     
     
-    action_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?27:18.0];
+    action_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?27:18.0];
     //
     action_button.layer.cornerRadius = 5.0;
     action_button.clipsToBounds = YES;
@@ -418,7 +418,7 @@ float distance = 10.0;
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:1.0] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:0.8] forState:UIControlStateHighlighted];
     if (IS_IPAD){
-        cancel_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeueCyr-Roman" size:(IS_IPAD)?30:20.0];
+        cancel_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
     }
     //cancel_button.backgroundColor = [UIColor redColor];
     return cancel_button;
