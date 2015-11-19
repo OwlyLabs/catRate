@@ -55,29 +55,28 @@ static iRateMind *instance = nil;
     //NSLog(@"%@",[UserDefaults objectForKey:last_rated_version_key]);
     //NSLog(@"%@",cur_version);
     
-     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     
-    if (![defaults objectForKey:last_rated_version_key]) {
-        [defaults setObject:cur_version forKey:last_rated_version_key];
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:last_rated_version_key]) {
+        [[NSUserDefaults standardUserDefaults] setObject:cur_version forKey:last_rated_version_key];
     }
     
     long last_date = 0;
-    if ([defaults objectForKey:last_open_date_key]) {
-        NSDate *lastDate = [defaults objectForKey:last_open_date_key];
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:last_open_date_key]) {
+        NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:last_open_date_key];
         last_date = [lastDate timeIntervalSince1970];
     }
     
     
-    BOOL is_changed_version = ![cur_version isEqualToString:[defaults objectForKey:last_rated_version_key]];
+    BOOL is_changed_version = ![cur_version isEqualToString:[[NSUserDefaults standardUserDefaults] objectForKey:last_rated_version_key]];
     if (is_changed_version) {
-        [defaults setObject:cur_version forKey:last_rated_version_key];
+        [[NSUserDefaults standardUserDefaults] setObject:cur_version forKey:last_rated_version_key];
         last_date = 0;
     }
     
     if (last_date == 0) {
-        [defaults setObject:[NSDate date] forKey:last_open_date_key];
-        [defaults setObject:@"FirstLaunch" forKey:userCallbackKey];
-        [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
+        [[NSUserDefaults standardUserDefaults] setObject:@"FirstLaunch" forKey:userCallbackKey];
+        [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
         return NO;
     }
     
@@ -85,7 +84,7 @@ static iRateMind *instance = nil;
     
     
     
-    int complated_launch = (int)[defaults integerForKey:countAfterLaunchesKey];
+    int complated_launch = (int)[[NSUserDefaults standardUserDefaults] integerForKey:countAfterLaunchesKey];
     
     
     long diff = current_time - last_date;
@@ -94,38 +93,38 @@ static iRateMind *instance = nil;
         // error
         return NO;
     }
-    if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Deny"]) {
+    if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Deny"]) {
         if (diff > show_interval_after_cancel || complated_launch >= limited_count_launches) {
-            [defaults setObject:[NSDate date] forKey:last_open_date_key];
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
             
-            [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+            [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
             
             return YES;
         }
     }else{
-        if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Rated"]) {
+        if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Rated"]) {
             if (is_changed_version) {
                 if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                    [defaults setObject:[NSDate date] forKey:last_open_date_key];
-                    [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
+                    [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                     return YES;
                 }
             }
         }else{
-            if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Support"]) {
+            if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Support"]) {
                 if (is_changed_version) {
                     if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                        [defaults setObject:[NSDate date] forKey:last_open_date_key];
-                       [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
+                       [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         return YES;
                     }
                 }
             }else{
-                if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"FirstLaunch"]) {
+                if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"FirstLaunch"]) {
                     if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                        [defaults setObject:[NSDate date] forKey:last_open_date_key];
+                        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
                         
-                        [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                        [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         
                         return YES;
                     }
