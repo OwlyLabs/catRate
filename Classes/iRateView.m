@@ -8,10 +8,16 @@
 #import "iRateView.h"
 #import "iRateMind.h"
 #import <sys/utsname.h>
+#import "UIColor+HEX.h"
 
 #define MainScreenWidht (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
 
 #define MainScreenHeight (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.height:[UIScreen mainScreen].bounds.size.width)
+
+#define RectWidth(f)                        f.size.width
+#define RectHeight(f)                       f.size.height
+#define RectSetOrigin(f, x, y)              CGRectMake(x, y, RectWidth(f), RectHeight(f))
+#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
 
 typedef NS_ENUM (NSInteger, popup_state){
     popup_state_empty = 1,
@@ -66,12 +72,6 @@ static NSString *id_application_key = @"trackIdKey";
 -(void)initData{
     cur_stars = 0;
     stateAlert = popup_state_empty;
-    
-    [YMMYandexMetrica reportEvent:@"CatRate"
-                        onFailure:^(NSError *error) {
-                            NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
-                        }];
-    
 }
 
 
@@ -97,7 +97,7 @@ static NSString *id_application_key = @"trackIdKey";
     self.backgroundColor = [UIColor clearColor];
     
     
-    if (IS_IPAD) {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
             
             self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
@@ -593,27 +593,10 @@ float distance = 10.0;
 
 
 -(void)rateApplication{
-    //NSLog(@"rateApplication");
-    
-    [YMMYandexMetrica reportEvent:@"CatRate-AppStore"
-                        onFailure:^(NSError *error) {
-                            NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
-                        }
-     ];
-    
-    
-    [YMMYandexMetrica reportEvent:[NSString stringWithFormat:@"CatRate-%i",cur_stars]
-                        onFailure:^(NSError *error) {
-                            NSLog(@"REPORT ERROR: %@", [error localizedDescription]);}
-     ];
-    
-    
-    
-    
     [[iRateMind sharedInstance] userRated];
     [self checkApplicationID:^(bool complate) {
         if (complate) {
-            if ([UserDefaults objectForKey:id_application_key]) {
+            if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
                 
                 NSString *URLString;
                 NSString *iRateiOS7AppStoreURLFormat = @"itms-apps://itunes.apple.com/app/id%@";
@@ -628,7 +611,7 @@ float distance = 10.0;
                 {
                     URLString = iRateiOSAppStoreURLFormat;
                 }
-                NSURL *ratingsURL = [NSURL URLWithString:[NSString stringWithFormat:URLString, [UserDefaults objectForKey:id_application_key]]];
+                NSURL *ratingsURL = [NSURL URLWithString:[NSString stringWithFormat:URLString, [[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]]];
                 
                 if ([[UIApplication sharedApplication] canOpenURL:ratingsURL])
                 {
@@ -651,18 +634,11 @@ float distance = 10.0;
 
 - (void)supportMail{
     if ([MFMailComposeViewController canSendMail]) {
-        
-        [YMMYandexMetrica reportEvent:@"CatRate-Contact"
-                            onFailure:^(NSError *error) {
-                                NSLog(@"REPORT ERROR: %@", [error localizedDescription]);
-                            }];
-        
-        
         MFMailComposeViewController* mailController = [[MFMailComposeViewController alloc] init];
         mailController.mailComposeDelegate = (id)self;
         [mailController setToRecipients:[NSArray arrayWithObjects:@"support@owlylabs.com",nil]];
         [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS). Тех. поддержка",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
-        [mailController.navigationBar setTintColor:RGB(39, 175, 195)];
+        [mailController.navigationBar setTintColor:[UIColor colorWithRed:39 green:175 blue:195 alpha:1]];
         
         NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
         
@@ -710,7 +686,7 @@ float distance = 10.0;
 
 -(void)checkApplicationID:(void(^)(bool complate))complated{
     
-    if ([UserDefaults objectForKey:id_application_key]) {
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
         if (complated) {
             complated(YES);
             return;
@@ -759,7 +735,7 @@ float distance = 10.0;
                 {
                     if ([bundleID isEqualToString:[[NSBundle mainBundle] bundleIdentifier]])
                     {
-                        [UserDefaults setObject:[self valueForKey:@"trackId" inJSON:json] forKey:id_application_key];
+                        [[NSUserDefaults standardUserDefaults] setObject:[self valueForKey:@"trackId" inJSON:json] forKey:id_application_key];
                         
                         if (complated) {
                             complated(YES);

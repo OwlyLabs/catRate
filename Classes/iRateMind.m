@@ -55,27 +55,29 @@ static iRateMind *instance = nil;
     //NSLog(@"%@",[UserDefaults objectForKey:last_rated_version_key]);
     //NSLog(@"%@",cur_version);
     
-    if (![UserDefaults objectForKey:last_rated_version_key]) {
-        [UserDefaults setObject:cur_version forKey:last_rated_version_key];
+     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    if (![defaults objectForKey:last_rated_version_key]) {
+        [defaults setObject:cur_version forKey:last_rated_version_key];
     }
     
     long last_date = 0;
-    if ([UserDefaults objectForKey:last_open_date_key]) {
-        NSDate *lastDate = [UserDefaults objectForKey:last_open_date_key];
+    if ([defaults objectForKey:last_open_date_key]) {
+        NSDate *lastDate = [defaults objectForKey:last_open_date_key];
         last_date = [lastDate timeIntervalSince1970];
     }
     
     
-    BOOL is_changed_version = ![cur_version isEqualToString:[UserDefaults objectForKey:last_rated_version_key]];
+    BOOL is_changed_version = ![cur_version isEqualToString:[defaults objectForKey:last_rated_version_key]];
     if (is_changed_version) {
-        [UserDefaults setObject:cur_version forKey:last_rated_version_key];
+        [defaults setObject:cur_version forKey:last_rated_version_key];
         last_date = 0;
     }
     
     if (last_date == 0) {
-        [UserDefaults setObject:[NSDate date] forKey:last_open_date_key];
-        [UserDefaults setObject:@"FirstLaunch" forKey:userCallbackKey];
-        [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+        [defaults setObject:[NSDate date] forKey:last_open_date_key];
+        [defaults setObject:@"FirstLaunch" forKey:userCallbackKey];
+        [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
         return NO;
     }
     
@@ -83,7 +85,7 @@ static iRateMind *instance = nil;
     
     
     
-    int complated_launch = (int)[UserDefaults integerForKey:countAfterLaunchesKey];
+    int complated_launch = (int)[defaults integerForKey:countAfterLaunchesKey];
     
     
     long diff = current_time - last_date;
@@ -92,38 +94,38 @@ static iRateMind *instance = nil;
         // error
         return NO;
     }
-    if ([[UserDefaults objectForKey:userCallbackKey] isEqualToString:@"Deny"]) {
+    if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Deny"]) {
         if (diff > show_interval_after_cancel || complated_launch >= limited_count_launches) {
-            [UserDefaults setObject:[NSDate date] forKey:last_open_date_key];
+            [defaults setObject:[NSDate date] forKey:last_open_date_key];
             
-            [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+            [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
             
             return YES;
         }
     }else{
-        if ([[UserDefaults objectForKey:userCallbackKey] isEqualToString:@"Rated"]) {
+        if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Rated"]) {
             if (is_changed_version) {
                 if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                    [UserDefaults setObject:[NSDate date] forKey:last_open_date_key];
-                    [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                    [defaults setObject:[NSDate date] forKey:last_open_date_key];
+                    [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                     return YES;
                 }
             }
         }else{
-            if ([[UserDefaults objectForKey:userCallbackKey] isEqualToString:@"Support"]) {
+            if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"Support"]) {
                 if (is_changed_version) {
                     if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                        [UserDefaults setObject:[NSDate date] forKey:last_open_date_key];
-                       [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                        [defaults setObject:[NSDate date] forKey:last_open_date_key];
+                       [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         return YES;
                     }
                 }
             }else{
-                if ([[UserDefaults objectForKey:userCallbackKey] isEqualToString:@"FirstLaunch"]) {
+                if ([[defaults objectForKey:userCallbackKey] isEqualToString:@"FirstLaunch"]) {
                     if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
-                        [UserDefaults setObject:[NSDate date] forKey:last_open_date_key];
+                        [defaults setObject:[NSDate date] forKey:last_open_date_key];
                         
-                        [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                        [defaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         
                         return YES;
                     }
@@ -136,26 +138,26 @@ static iRateMind *instance = nil;
 
 
 -(void)userDeny{
-    [UserDefaults setObject:@"Deny" forKey:userCallbackKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@"Deny" forKey:userCallbackKey];
 }
 
 -(void)userWriteSupport{
-    [UserDefaults setObject:@"Support" forKey:userCallbackKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@"Support" forKey:userCallbackKey];
 }
 
 -(void)userRated{
-    [UserDefaults setObject:@"Rated" forKey:userCallbackKey];
+    [[NSUserDefaults standardUserDefaults] setObject:@"Rated" forKey:userCallbackKey];
 }
 
 
 -(void)eventAfterLaunch{
     int complated_launch = 0;
-    if (![UserDefaults objectForKey:countAfterLaunchesKey]) {
-        [UserDefaults setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+    if (![[NSUserDefaults standardUserDefaults] objectForKey:countAfterLaunchesKey]) {
+        [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
     }
-    complated_launch = (int)[UserDefaults integerForKey:countAfterLaunchesKey];
+    complated_launch = (int)[[NSUserDefaults standardUserDefaults] integerForKey:countAfterLaunchesKey];
     complated_launch ++;
-    [UserDefaults setInteger:(NSInteger)complated_launch forKey:countAfterLaunchesKey];
+    [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)complated_launch forKey:countAfterLaunchesKey];
 }
 
 @end

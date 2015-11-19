@@ -9,7 +9,7 @@
 #import "iRateManager.h"
 #import "iRateView.h"
 #import "iRateMind.h"
-#import "NewGlobalBannerController.h"
+#import "AppDelegate.h"
 
 @implementation iRateManager
 static iRateManager *instance = nil;
@@ -27,7 +27,6 @@ iRateView *iRateInstance;
 
 
 -(void)showRate{
-    [[NewGlobalBannerController sharedInstance]stopShow];
     [self checkIRate];
 }
 
@@ -48,9 +47,9 @@ iRateView *iRateInstance;
 
 -(void)checkIRate{
     if (!iRateInstance) {
-        iRateInstance = [[iRateView alloc] initWithFrame:ApplicationDelegate.window.bounds];
+        iRateInstance = [[iRateView alloc] initWithFrame:((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.bounds];
     }
-    [ApplicationDelegate.window addSubview:iRateInstance];
+    [((AppDelegate *)[[UIApplication sharedApplication] delegate]).window addSubview:iRateInstance];
     [iRateInstance setNeedsDisplay];
 }
 
