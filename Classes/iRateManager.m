@@ -9,7 +9,6 @@
 #import "iRateManager.h"
 #import "iRateView.h"
 #import "iRateMind.h"
-#import "AppDelegate.h"
 
 @implementation iRateManager
 static iRateManager *instance = nil;
