@@ -4,5 +4,9 @@
 <dict>
 	<key>Version</key>
 	<string>1.0</string>
+	<key>UIAppFonts</key>
+	<array>
+		<string>HelveticaNeueCyr-Roman.otf</string>
+	</array>
 </dict>
 </plist>
