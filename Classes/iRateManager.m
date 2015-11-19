@@ -46,16 +46,20 @@ iRateView *iRateInstance;
 
 -(void)checkIRate{
     
-    UIWindow *frontWindow = [[UIApplication sharedApplication] keyWindow];
+    UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
     [frontWindow setBackgroundColor:[UIColor clearColor]];
     [frontWindow addSubview:iRateInstance];
-    /*
+    
+    
+    
     if (!iRateInstance) {
-        iRateInstance = [[iRateView alloc] initWithFrame:((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.bounds];
+        iRateInstance = [[iRateView alloc] initWithFrame:frontWindow.bounds];
     }
-    [((AppDelegate *)[[UIApplication sharedApplication] delegate]).window addSubview:iRateInstance];
-     */
+    
+    [frontWindow.rootViewController.view addSubview:iRateInstance];
+    
     [iRateInstance setNeedsDisplay];
+    
 }
 
 
