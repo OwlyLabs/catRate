@@ -417,9 +417,9 @@ float distance = 10.0;
     [cancel_button setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:1.0] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:0.8] forState:UIControlStateHighlighted];
-    if (IS_IPAD){
-        cancel_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
-    }
+
+    cancel_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
+    
     //cancel_button.backgroundColor = [UIColor redColor];
     return cancel_button;
 }
@@ -475,9 +475,9 @@ float distance = 10.0;
     
     //
     if (!separ) {
-        separ = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(actionBtn.frame) + 10, cover.frame.size.width, 1)];
+        separ = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(actionBtn.frame) + 10, cover.frame.size.width, 0.5)];
         [cover addSubview:separ];
-        separ.backgroundColor = [UIColor colorWithHex:@"c2c5c5" alpha:1.0];
+        separ.backgroundColor = [UIColor colorWithHex:@"a2adb9" alpha:1.0];
     }
     
     
