@@ -116,10 +116,18 @@ static NSString *id_application_key = @"trackIdKey";
     
     
     
-    //alphaView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    alphaView.backgroundColor = [UIColor blackColor];
-    alphaView.alpha = 0.4;
-    [alphaView removeFromSuperview];
+    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+        alphaView.backgroundColor = [UIColor clearColor];
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = alphaView.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        blurEffectView.alpha = 1;
+        [alphaView addSubview:blurEffectView];
+    } else {
+        alphaView.backgroundColor = [UIColor blackColor];
+        alphaView.alpha = 0.4;
+    }
     
     
     
