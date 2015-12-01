@@ -10,9 +10,7 @@
 
 @interface iRateMind : NSObject
 
-
 +(iRateMind*)sharedInstance;
-
 
 -(BOOL)checkRate;
 

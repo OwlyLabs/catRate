@@ -10,14 +10,11 @@
 
 @implementation iRateMind
 
-
-
 static NSString *last_open_date_key = @"rate_last_open_date_key";
 static NSString *userCallbackKey = @"rate_userCallbackKey";
 static NSString *countAfterLaunchesKey = @"countAfterLaunchesKey";
 
 static NSString *last_rated_version_key = @"last_rated_version_key";
-
 
 int show_interval_first_launch = 60*60*24*3; /// интервал до 1го показа после устанвки
 
@@ -25,8 +22,7 @@ int show_interval_after_cancel = 60*60*24*4; // интервал после на
 
 /*int show_interval_after_support = 60*60*24*2; // интервал после нажания на отмену
  в этом приле не надо
-*/
-
+ */
 
 int limited_count_launches = 100;
 
@@ -42,19 +38,12 @@ static iRateMind *instance = nil;
     return instance;
 }
 
-
-
-
 -(BOOL)checkRate{
     if (debug) {
         return YES;
     }
     
     NSString *cur_version = [NSString stringWithFormat:@"%@_%@",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"],[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"]];
-    
-    //NSLog(@"%@",[UserDefaults objectForKey:last_rated_version_key]);
-    //NSLog(@"%@",cur_version);
-    
     
     if (![[NSUserDefaults standardUserDefaults] objectForKey:last_rated_version_key]) {
         [[NSUserDefaults standardUserDefaults] setObject:cur_version forKey:last_rated_version_key];
@@ -115,7 +104,7 @@ static iRateMind *instance = nil;
                 if (is_changed_version) {
                     if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
                         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
-                       [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
+                        [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         return YES;
                     }
                 }
@@ -147,7 +136,6 @@ static iRateMind *instance = nil;
 -(void)userRated{
     [[NSUserDefaults standardUserDefaults] setObject:@"Rated" forKey:userCallbackKey];
 }
-
 
 -(void)eventAfterLaunch{
     int complated_launch = 0;

@@ -9,6 +9,7 @@
 #import "iRateManager.h"
 #import "iRateView.h"
 #import "iRateMind.h"
+//#import "NewGlobalBannerController.h"
 
 @implementation iRateManager
 static iRateManager *instance = nil;
@@ -23,9 +24,8 @@ iRateView *iRateInstance;
     return instance;
 }
 
-
-
 -(void)showRate{
+    //[[NewGlobalBannerController sharedInstance]stopShow];
     [self checkIRate];
 }
 
@@ -41,31 +41,21 @@ iRateView *iRateInstance;
     }
 }
 
-
-
-
 -(void)checkIRate{
-    
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
     [frontWindow setBackgroundColor:[UIColor clearColor]];
-    [frontWindow addSubview:iRateInstance];
-    
-    
     
     if (!iRateInstance) {
         iRateInstance = [[iRateView alloc] initWithFrame:frontWindow.bounds];
     }
     
-    [frontWindow.rootViewController.view addSubview:iRateInstance];
+    [frontWindow addSubview:iRateInstance];
     
     [iRateInstance setNeedsDisplay];
-    
 }
-
 
 -(void)eventAfterLaunch{
     [[iRateMind sharedInstance] eventAfterLaunch];
 }
-
 
 @end

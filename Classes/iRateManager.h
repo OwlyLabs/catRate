@@ -12,7 +12,6 @@
 
 +(iRateManager*)sharedInstance;
 
-
 -(void)showIfNeeded;
 -(void)showRate;
 -(void)hideRate;

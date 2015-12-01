@@ -18,6 +18,7 @@
 #define RectHeight(f)                       f.size.height
 #define RectSetOrigin(f, x, y)              CGRectMake(x, y, RectWidth(f), RectHeight(f))
 #define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+#define IOS8_AND_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 typedef NS_ENUM (NSInteger, popup_state){
     popup_state_empty = 1,
@@ -47,13 +48,8 @@ int cur_stars = 0;
 static NSString *id_application_key = @"trackIdKey";
 
 
-
-
-
-
 - (UIViewController *)parentViewController {
     return [UIApplication sharedApplication].keyWindow.rootViewController;
-    //return self.parentVC;
 }
 
 
@@ -65,7 +61,6 @@ static NSString *id_application_key = @"trackIdKey";
     }
     self.backgroundColor = [UIColor clearColor];
     [self initData];
-    //[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRotate:) name:UIDeviceOrientationDidChangeNotification object:nil];
     return self;
 }
 
@@ -101,11 +96,7 @@ static NSString *id_application_key = @"trackIdKey";
         if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
             
             self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
-            
-            
-            //alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenWidht, MainScreenHeight)];
         }else{
-            //alphaView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, MainScreenHeight, MainScreenWidht)];
             self.frame = CGRectMake(0, 0, MainScreenWidht, MainScreenHeight);
         }
     }
@@ -113,24 +104,23 @@ static NSString *id_application_key = @"trackIdKey";
     alphaView = [[UIView alloc] initWithFrame:self.frame];
     
     
-    
-    
-    
-    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
-        alphaView.backgroundColor = [UIColor clearColor];
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = alphaView.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        blurEffectView.alpha = 1;
-        [alphaView addSubview:blurEffectView];
+    if (IOS8_AND_LATER) {
+        if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+            alphaView.backgroundColor = [UIColor clearColor];
+            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            blurEffectView.frame = alphaView.bounds;
+            blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+            blurEffectView.alpha = 1;
+            [alphaView addSubview:blurEffectView];
+        } else {
+            alphaView.backgroundColor = [UIColor blackColor];
+            alphaView.alpha = 0.4;
+        }
     } else {
         alphaView.backgroundColor = [UIColor blackColor];
         alphaView.alpha = 0.4;
     }
-    
-    
-    
     
     
     alphaView.frame = self.frame;
@@ -146,14 +136,9 @@ static NSString *id_application_key = @"trackIdKey";
     [self setRate:cur_stars];
 }
 
-
-
-- (void) didRotate:(NSNotification *)notification
-{  
-
+- (void) didRotate:(NSNotification *)notification {
+    
 }
-
-
 
 -(UIView*)rateView{
     if (IS_IPAD) {
@@ -184,10 +169,6 @@ static NSString *id_application_key = @"trackIdKey";
         case popup_state_empty:{
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, 70)];
             
-            
-            
-            
-            
             NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0]}];
             
             UILabel *like_app = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?-4.5:0, view.frame.size.width, (IS_IPAD)?80:50)];
@@ -203,7 +184,7 @@ static NSString *id_application_key = @"trackIdKey";
             break;}
         case popup_state_bad_choise:{
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, (IS_IPAD)?19+9:19, cover.frame.size.width - 40, 70+((IS_IPAD)?-9:0))];
-            UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (IS_IPAD)?30:25)]; 
+            UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (IS_IPAD)?30:25)];
             
             
             
@@ -304,15 +285,14 @@ float distance = 10.0;
             [star_rate_view addSubview:star];
             lastX = CGRectGetMaxX(star.frame) + distance/2;
         }
-        UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc] 
+        UIPanGestureRecognizer *pgr = [[UIPanGestureRecognizer alloc]
                                        initWithTarget:self action:@selector(handlePan:)];
         [star_rate_view addGestureRecognizer:pgr];
         
-        UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] 
+        UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc]
                                        initWithTarget:self action:@selector(handlePan:)];
         [star_rate_view addGestureRecognizer:tgr];
     }
-    //star_rate_view.backgroundColor = [UIColor redColor];
     return star_rate_view;
 }
 
@@ -322,7 +302,6 @@ float distance = 10.0;
 
 -(IBAction)handlePan:(UIPanGestureRecognizer *)recognizer {
     CGPoint point = [recognizer locationInView:star_rate_view];
-    //NSLog(@"%@",NSStringFromCGPoint(point));
     float position = 0;
     if (point.x < 0) {
         position = 0;
@@ -341,7 +320,7 @@ float distance = 10.0;
     [self setRate:rate];
 }
 
-#pragma mark - 
+#pragma mark -
 
 
 
@@ -425,10 +404,9 @@ float distance = 10.0;
     [cancel_button setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:1.0] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:0.8] forState:UIControlStateHighlighted];
-
+    
     cancel_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
     
-    //cancel_button.backgroundColor = [UIColor redColor];
     return cancel_button;
 }
 
@@ -507,7 +485,7 @@ float distance = 10.0;
 -(UIView*)coverForIPad{
     //
     if (!cover) {
-        cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 436, 638)];
+        cover = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 436, 644)];
         cover.backgroundColor = [UIColor colorWithHex:@"#f2f5f5" alpha:1];
         cover.center = CGPointMake(self.center.x, self.center.y - 30);
         cover.layer.cornerRadius = 5;
@@ -578,7 +556,6 @@ float distance = 10.0;
 #pragma mark - button action
 
 -(void)writeDeveloper{
-    //NSLog(@"writeDeveloper");
     [[iRateMind sharedInstance] userWriteSupport];
     UIViewController *vc = [self parentViewController];
     if (vc) {
@@ -613,7 +590,7 @@ float distance = 10.0;
                 if ([[UIApplication sharedApplication] canOpenURL:ratingsURL])
                 {
                     [[UIApplication sharedApplication] openURL:ratingsURL];
-                }                
+                }
             }
         }
     }];
@@ -635,7 +612,7 @@ float distance = 10.0;
         mailController.mailComposeDelegate = (id)self;
         [mailController setToRecipients:[NSArray arrayWithObjects:@"support@owlylabs.com",nil]];
         [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS). Тех. поддержка",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
-        [mailController.navigationBar setTintColor:[UIColor colorWithRed:39 green:175 blue:195 alpha:1]];
+        [mailController.navigationBar setTintColor:[UIColor colorWithRed:255 green:0 blue:0 alpha:1]];
         
         NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
         
@@ -754,7 +731,7 @@ float distance = 10.0;
                     complated(NO);
                     return;
                 }
-            }            
+            }
         });
         
         
