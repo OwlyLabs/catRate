@@ -18,5 +18,5 @@
 -(void)userWriteSupport;
 -(void)userRated;
 -(void)eventAfterLaunch;
-
+-(void)setDebugMode:(BOOL)isDebug;
 @end

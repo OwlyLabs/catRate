@@ -8,6 +8,11 @@
 
 #import "iRateMind.h"
 
+@interface iRateMind ()
+@property BOOL debug;
+@end
+
+
 @implementation iRateMind
 
 static NSString *last_open_date_key = @"rate_last_open_date_key";
@@ -26,7 +31,6 @@ int show_interval_after_cancel = 60*60*24*4; // интервал после на
 
 int limited_count_launches = 100;
 
-bool debug = NO;
 
 static iRateMind *instance = nil;
 
@@ -34,12 +38,22 @@ static iRateMind *instance = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         instance = [iRateMind new];
+        [instance setParams];
     });
     return instance;
 }
 
+-(void)setParams{
+    self.debug = NO;
+}
+
+-(void)setDebugMode:(BOOL)isDebug{
+    self.debug = isDebug;
+}
+
+
 -(BOOL)checkRate{
-    if (debug) {
+    if (self.debug) {
         return YES;
     }
     

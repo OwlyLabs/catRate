@@ -24,6 +24,10 @@ iRateView *iRateInstance;
     return instance;
 }
 
+-(void)setDebugMode:(BOOL)debug{
+    [[iRateMind sharedInstance] setDebugMode:debug];
+}
+
 
 -(void)hideRate{
     if (iRateInstance) {

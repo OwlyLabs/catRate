@@ -14,6 +14,6 @@
 
 -(void)showIfNeeded:(void(^)(BOOL need))callbackBlock;
 -(void)hideRate;
-
 -(void)eventAfterLaunch;
+-(void)setDebugMode:(BOOL)debug;
 @end
