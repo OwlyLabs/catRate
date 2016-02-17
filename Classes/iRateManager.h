@@ -12,8 +12,7 @@
 
 +(iRateManager*)sharedInstance;
 
--(void)showIfNeeded;
--(void)showRate;
+-(void)showIfNeeded:(void(^)(BOOL need))callbackBlock;
 -(void)hideRate;
 
 -(void)eventAfterLaunch;

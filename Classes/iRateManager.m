@@ -24,10 +24,6 @@ iRateView *iRateInstance;
     return instance;
 }
 
--(void)showRate{
-    //[[NewGlobalBannerController sharedInstance]stopShow];
-    [self checkIRate];
-}
 
 -(void)hideRate{
     if (iRateInstance) {
@@ -35,11 +31,20 @@ iRateView *iRateInstance;
     }
 }
 
--(void)showIfNeeded{
+
+-(void)showIfNeeded:(void(^)(BOOL need))callbackBlock{
     if ([[iRateMind sharedInstance] checkRate]) {
-        [self showRate];
+        if (callbackBlock) {
+            callbackBlock(YES);
+        }
+        [self checkIRate];
+    }else{
+        if (callbackBlock) {
+            callbackBlock(NO);
+        }
     }
 }
+
 
 -(void)checkIRate{
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
