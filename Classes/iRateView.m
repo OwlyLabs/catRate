@@ -9,6 +9,7 @@
 #import "iRateMind.h"
 #import <sys/utsname.h>
 #import "UIColor+HEX.h"
+#import "iRateManager.h"
 
 #define MainScreenWidht (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
 
@@ -608,9 +609,28 @@ float distance = 10.0;
 
 - (void)supportMail{
     if ([MFMailComposeViewController canSendMail]) {
+        NSDictionary *cur_params = [[iRateManager sharedInstance] getSupportMailParams];
+        NSMutableArray *recipients = [NSMutableArray new];
+        if ([cur_params objectForKey:@"recipients"]) {
+            if ([[cur_params objectForKey:@"recipients"] isKindOfClass:[NSArray class]]) {
+                for (NSString *recipient in [cur_params objectForKey:@"recipients"]) {
+                    if (![recipient isEqual:[NSNull null]]) {
+                        if (recipient) {
+                            [recipients addObject:recipient];
+                        }
+                    }
+                }
+            }else{
+                if ([[cur_params objectForKey:@"recipients"] isKindOfClass:[NSString class]]) {
+                    [recipients addObject:[cur_params objectForKey:@"recipients"]];
+                }
+            }
+        }
+        
+        
         MFMailComposeViewController* mailController = [[MFMailComposeViewController alloc] init];
         mailController.mailComposeDelegate = (id)self;
-        [mailController setToRecipients:[NSArray arrayWithObjects:@"support@owlylabs.com",nil]];
+        [mailController setToRecipients:recipients];
         [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS). Тех. поддержка",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
         [mailController.navigationBar setTintColor:[UIColor colorWithRed:255 green:0 blue:0 alpha:1]];
         
@@ -634,8 +654,18 @@ float distance = 10.0;
                                         options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
         NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
         
-        [mailController setMessageBody:[NSString stringWithFormat:@"Здравствуйте, Owly Labs\n\n\nУстройство:\n %@ \n iOS %@ \n%@ %@", seriaDevice, [[UIDevice currentDevice] systemVersion],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"], version] isHTML:NO];
         
+        NSString *name_company = @"";
+        if ([cur_params objectForKey:@"nameCompany"]) {
+            if (![[cur_params objectForKey:@"nameCompany"] isEqual:[NSNull null]]) {
+                if ([cur_params objectForKey:@"nameCompany"]) {
+                    name_company = [cur_params objectForKey:@"nameCompany"];
+                }
+            }
+            
+        }
+        
+        [mailController setMessageBody:[NSString stringWithFormat:@"Здравствуйте, %@\n\n\nУстройство:\n %@ \n iOS %@ \n%@ %@", name_company, seriaDevice, [[UIDevice currentDevice] systemVersion],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"], version] isHTML:NO];
         
         [[self parentViewController] presentViewController:mailController animated:YES completion:nil];
         

@@ -11,6 +11,11 @@
 #import "iRateMind.h"
 //#import "NewGlobalBannerController.h"
 
+
+@interface iRateManager ()
+@property (nonatomic,retain) NSDictionary *supportMailParams;
+@end
+
 @implementation iRateManager
 static iRateManager *instance = nil;
 iRateView *iRateInstance;
@@ -35,6 +40,13 @@ iRateView *iRateInstance;
     }
 }
 
+-(void)setSupportParams:(NSDictionary*)params{
+    _supportMailParams = params;
+}
+
+-(NSDictionary*)getSupportMailParams{
+    return _supportMailParams;
+}
 
 -(void)showIfNeeded:(void(^)(BOOL need))callbackBlock{
     if ([[iRateMind sharedInstance] checkRate]) {

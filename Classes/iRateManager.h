@@ -16,4 +16,6 @@
 -(void)hideRate;
 -(void)eventAfterLaunch;
 -(void)setDebugMode:(BOOL)debug;
+-(void)setSupportParams:(NSDictionary*)params;
+-(NSDictionary*)getSupportMailParams;
 @end
