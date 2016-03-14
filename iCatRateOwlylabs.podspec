@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                  = "iCatRateOwlylabs"
-  s.version               = "0.0.16"
+  s.version               = "0.0.17"
   s.summary               = "Example of creating own pod. dfbsd hfg hfgj fgj"
   s.homepage              = "https://github.com/OwlyLabs/catRate"
   s.license               = { :type => 'MIT', :file => 'LICENSE' }

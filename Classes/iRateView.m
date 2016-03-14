@@ -558,6 +558,10 @@ float distance = 10.0;
 
 -(void)writeDeveloper{
     [[iRateMind sharedInstance] userWriteSupport];
+    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userWriteSupport)]) {
+        [[iRateManager sharedInstance].delegate userWriteSupport];
+    }
+    
     UIViewController *vc = [self parentViewController];
     if (vc) {
         [self supportMail];
@@ -569,6 +573,10 @@ float distance = 10.0;
 
 -(void)rateApplication{
     [[iRateMind sharedInstance] userRated];
+    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userRated:)]) {
+        [[iRateManager sharedInstance].delegate userRated:cur_stars];
+    }
+    
     [self checkApplicationID:^(bool complate) {
         if (complate) {
             if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
@@ -601,6 +609,9 @@ float distance = 10.0;
 
 -(void)cancelAction{
     [[iRateMind sharedInstance] userDeny];
+    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userDeny)]) {
+        [[iRateManager sharedInstance].delegate userDeny];
+    }
     [self removeFromSuperview];
 }
 

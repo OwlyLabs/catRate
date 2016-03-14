@@ -8,10 +8,18 @@
 
 #import <Foundation/Foundation.h>
 
+@protocol iRateManagerDelegate <NSObject>
+-(void)userDeny;
+-(void)userWriteSupport;
+-(void)userRated:(int)stars;
+@end
+
 @interface iRateManager : NSObject
+
 
 +(iRateManager*)sharedInstance;
 
+@property (assign) __unsafe_unretained id <iRateManagerDelegate> delegate;
 -(void)showIfNeeded:(void(^)(BOOL need))callbackBlock;
 -(void)hideRate;
 -(void)eventAfterLaunch;
