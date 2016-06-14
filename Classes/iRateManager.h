@@ -21,6 +21,7 @@
 
 @property (assign) __unsafe_unretained id <iRateManagerDelegate> delegate;
 -(void)showIfNeeded:(void(^)(BOOL need))callbackBlock;
+-(void)showHard;
 -(void)hideRate;
 -(void)eventAfterLaunch;
 -(void)setDebugMode:(BOOL)debug;

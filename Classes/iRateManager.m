@@ -61,6 +61,9 @@ iRateView *iRateInstance;
     }
 }
 
+-(void)showHard{
+    [self checkIRate];
+}
 
 -(void)checkIRate{
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
