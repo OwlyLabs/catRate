@@ -19,4 +19,15 @@
 -(void)userRated;
 -(void)eventAfterLaunch;
 -(void)setDebugMode:(BOOL)isDebug;
+
+
+
+
+
+-(void)setIntervalFirstLaunch:(int)intervalDays;
+-(void)setIntervalAfterCancel:(int)intervalDays;
+-(void)setCountLaunchesToShow:(int)intervalDays;
+-(int)getIntervalFirstLaunch;
+-(int)getIntervalAfterCancel;
+-(int)getIntervalCountLaunches;
 @end

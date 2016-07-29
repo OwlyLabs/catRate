@@ -21,15 +21,15 @@ static NSString *countAfterLaunchesKey = @"countAfterLaunchesKey";
 
 static NSString *last_rated_version_key = @"last_rated_version_key";
 
-int show_interval_first_launch = 60*60*24*3; /// интервал до 1го показа после устанвки
 
-int show_interval_after_cancel = 60*60*24*4; // интервал после нажания на отмену (4- на 5й день)
+
+static NSString *intervalFirstLaunchKey = @"iCatRateIntervalFirstLaunchKey";
+static NSString *intervalAfterCancelKey = @"iCatRateIntervalAfterCancelKey";
+static NSString *countLaunchesToShowKey = @"iCatRateCountLaunchesToShowKey";
 
 /*int show_interval_after_support = 60*60*24*2; // интервал после нажания на отмену
  в этом приле не надо
  */
-
-int limited_count_launches = 100;
 
 
 static iRateMind *instance = nil;
@@ -50,6 +50,54 @@ static iRateMind *instance = nil;
 -(void)setDebugMode:(BOOL)isDebug{
     self.debug = isDebug;
 }
+
+#pragma mark - show intervals
+
+-(void)setIntervalFirstLaunch:(int)intervalDays{ /// интервал до 1го показа после устанвки
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%i",intervalDays] forKey:intervalFirstLaunchKey];
+}
+
+-(void)setIntervalAfterCancel:(int)intervalDays{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%i",intervalDays] forKey:intervalAfterCancelKey];
+}
+
+-(void)setCountLaunchesToShow:(int)intervalDays{
+    [[NSUserDefaults standardUserDefaults] setObject:[NSString stringWithFormat:@"%i",intervalDays] forKey:countLaunchesToShowKey];
+}
+
+#pragma mark -
+
+-(int)getIntervalFirstLaunch{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:intervalFirstLaunchKey]) {
+        int days = [[[NSUserDefaults standardUserDefaults] objectForKey:intervalFirstLaunchKey] intValue];
+        if (days>0 && days < 1000) {
+            return 60*60*24*days;
+        }
+    }
+    return 60*60*24*3;
+}
+
+-(int)getIntervalAfterCancel{ // интервал после нажания на отмену (если 4, то - на 5й день)
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:intervalAfterCancelKey]) {
+        int days = [[[NSUserDefaults standardUserDefaults] objectForKey:intervalAfterCancelKey] intValue];
+        if (days>0 && days < 1000) {
+            return 60*60*24*days;
+        }
+    }
+    return 60*60*24*4;
+}
+
+-(int)getIntervalCountLaunches{
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:countLaunchesToShowKey]) {
+        int days = [[[NSUserDefaults standardUserDefaults] objectForKey:countLaunchesToShowKey] intValue];
+        if (days>0 && days < 1000) {
+            return days;
+        }
+    }
+    return 100;
+}
+
+#pragma mark -
 
 
 -(BOOL)checkRate{
@@ -96,8 +144,12 @@ static iRateMind *instance = nil;
         // error
         return NO;
     }
+    
+    
+    
+    
     if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Deny"]) {
-        if (diff > show_interval_after_cancel || complated_launch >= limited_count_launches) {
+        if (diff > [self getIntervalAfterCancel] || complated_launch >= [self getIntervalCountLaunches]) {
             [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
             
             [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
@@ -107,7 +159,7 @@ static iRateMind *instance = nil;
     }else{
         if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Rated"]) {
             if (is_changed_version) {
-                if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
+                if (diff > [self getIntervalFirstLaunch] || complated_launch >= [self getIntervalCountLaunches]) {
                     [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
                     [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                     return YES;
@@ -116,7 +168,7 @@ static iRateMind *instance = nil;
         }else{
             if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"Support"]) {
                 if (is_changed_version) {
-                    if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
+                    if (diff > [self getIntervalFirstLaunch] || complated_launch >= [self getIntervalCountLaunches]) {
                         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
                         [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];
                         return YES;
@@ -124,7 +176,7 @@ static iRateMind *instance = nil;
                 }
             }else{
                 if ([[[NSUserDefaults standardUserDefaults] objectForKey:userCallbackKey] isEqualToString:@"FirstLaunch"]) {
-                    if (diff > show_interval_first_launch || complated_launch >= limited_count_launches) {
+                    if (diff > [self getIntervalFirstLaunch] || complated_launch >= [self getIntervalCountLaunches]) {
                         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
                         
                         [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)0 forKey:countAfterLaunchesKey];

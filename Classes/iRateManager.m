@@ -33,6 +33,30 @@ iRateView *iRateInstance;
     [[iRateMind sharedInstance] setDebugMode:debug];
 }
 
+#pragma mark - setup settings
+-(void)setIntervalFirstLaunch:(int)intervalDays{
+    [[iRateMind sharedInstance] setIntervalFirstLaunch:intervalDays];
+}
+-(void)setIntervalAfterCancel:(int)intervalDays{
+    [[iRateMind sharedInstance] setIntervalAfterCancel:intervalDays];
+}
+-(void)setCountLaunchesToShow:(int)intervalDays{
+    [[iRateMind sharedInstance] setCountLaunchesToShow:intervalDays];
+}
+-(int)getIntervalFirstLaunch{
+    return [[iRateMind sharedInstance] getIntervalFirstLaunch];
+}
+-(int)getIntervalAfterCancel{
+    return [[iRateMind sharedInstance] getIntervalAfterCancel];
+}
+-(int)getIntervalCountLaunches{
+    return [[iRateMind sharedInstance] getIntervalCountLaunches];
+}
+
+
+
+
+
 
 -(void)hideRate{
     if (iRateInstance) {
