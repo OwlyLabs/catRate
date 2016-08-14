@@ -159,6 +159,16 @@ static iRateMind *instance = nil;
     complated_launch = (int)[[NSUserDefaults standardUserDefaults] integerForKey:countAfterLaunchesKey];
     complated_launch ++;
     [[NSUserDefaults standardUserDefaults] setInteger:(NSInteger)complated_launch forKey:countAfterLaunchesKey];
+    
+    long last_date = 0;
+    if ([[NSUserDefaults standardUserDefaults] objectForKey:last_open_date_key]) {
+        NSDate *lastDate = [[NSUserDefaults standardUserDefaults] objectForKey:last_open_date_key];
+        last_date = [lastDate timeIntervalSince1970];
+    }
+    if (last_date == 0) {
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:last_open_date_key];
+        [[NSUserDefaults standardUserDefaults] setObject:@"FirstLaunch" forKey:userCallbackKey];
+    }
 }
 
 @end
