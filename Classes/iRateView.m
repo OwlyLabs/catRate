@@ -621,6 +621,10 @@ float distance = 10.0;
 - (void)supportMail{
     if ([MFMailComposeViewController canSendMail]) {
         NSDictionary *cur_params = [[iRateManager sharedInstance] getSupportMailParams];
+        
+        
+        
+        
         NSMutableArray *recipients = [NSMutableArray new];
         if ([cur_params objectForKey:@"recipients"]) {
             if ([[cur_params objectForKey:@"recipients"] isKindOfClass:[NSArray class]]) {
@@ -643,7 +647,20 @@ float distance = 10.0;
         mailController.mailComposeDelegate = (id)self;
         [mailController setToRecipients:recipients];
         [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS)",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
-        [mailController.navigationBar setTintColor:[UIColor colorWithRed:255 green:0 blue:0 alpha:1]];
+        
+        UIColor *tintColor = [UIColor colorWithHex:@"#27afc3" alpha:1.0];
+        if ([cur_params objectForKey:@"tintColor"]) {
+            if (![[cur_params objectForKey:@"tintColor"] isEqual:[NSNull null]]) {
+                if ([cur_params objectForKey:@"tintColor"]) {
+                    if ([UIColor colorWithHex:[cur_params objectForKey:@"tintColor"] alpha:1.0]) {
+                        tintColor = [UIColor colorWithHex:[cur_params objectForKey:@"tintColor"] alpha:1.0];
+                    }
+                }
+            }
+            
+        }
+        
+        [mailController.navigationBar setTintColor:tintColor];
         
         NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
         
