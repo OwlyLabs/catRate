@@ -642,7 +642,7 @@ float distance = 10.0;
         MFMailComposeViewController* mailController = [[MFMailComposeViewController alloc] init];
         mailController.mailComposeDelegate = (id)self;
         [mailController setToRecipients:recipients];
-        [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS). Тех. поддержка",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
+        [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS)",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
         [mailController.navigationBar setTintColor:[UIColor colorWithRed:255 green:0 blue:0 alpha:1]];
         
         NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
