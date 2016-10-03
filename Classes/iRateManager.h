@@ -37,4 +37,7 @@
 -(int)getIntervalAfterCancel;
 -(int)getIntervalCountLaunches;
 
+-(void)setLanguage:(NSString *)l;
+-(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternat;
+
 @end

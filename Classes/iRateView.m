@@ -692,7 +692,6 @@ float distance = 10.0;
             }
             
         }
-        
         [mailController setMessageBody:[NSString stringWithFormat:@"Здравствуйте, %@\n\n\nУстройство:\n %@ \n iOS %@ \n%@ %@", name_company, seriaDevice, [[UIDevice currentDevice] systemVersion],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"], version] isHTML:NO];
         
         [[self parentViewController] presentViewController:mailController animated:YES completion:nil];
@@ -886,17 +885,21 @@ float distance = 10.0;
 
 - (NSString *)localizedStringForKey:(NSString *)key withDefault:(NSString *)defaultString
 {
-    static NSBundle *bundle = nil;
-    if (bundle == nil)
-    {
-        NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
-        bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
-    }
-    defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
-    return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];
+    return [[iRateManager sharedInstance] getLoclizedStringWithKey:key alter:defaultString];
+    
+    /*static NSBundle *bundle = nil;
+     if (bundle == nil)
+     {
+     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
+     bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+     }
+     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];*/
 }
 
 #pragma mark -
+
+
 
 
 @end

@@ -15,6 +15,7 @@
 @interface iRateManager ()
 @property (nonatomic,retain) NSDictionary *supportMailParams;
 @end
+static NSBundle *iRateBundle = nil;
 
 @implementation iRateManager
 static iRateManager *instance = nil;
@@ -104,6 +105,32 @@ iRateView *iRateInstance;
 
 -(void)eventAfterLaunch{
     [[iRateMind sharedInstance] eventAfterLaunch];
+}
+
+
+
+-(void)setLanguage:(NSString *)l
+{
+    NSString *path = [[NSBundle mainBundle] pathForResource:l ofType:@"lproj" inDirectory:@"iRateCat.bundle"];
+    iRateBundle = [NSBundle bundleWithPath:(!path)?[NSBundle mainBundle]:path];
+}
+
+-(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate{
+    if (!iRateBundle) {
+        return NSLocalizedString(key,alternate);
+    }
+    
+    /*static NSBundle *bundle = nil;
+     if (bundle == nil)
+     {
+     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
+     bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+     }
+     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
+     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];*/
+    
+    
+    return [iRateBundle localizedStringForKey:key value:alternate table:nil];
 }
 
 @end
