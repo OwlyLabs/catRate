@@ -15,10 +15,11 @@
 @interface iRateManager ()
 @property (nonatomic,retain) NSDictionary *supportMailParams;
 @end
-static NSBundle *iRateBundle = nil;
+
 
 @implementation iRateManager
 static iRateManager *instance = nil;
+static NSBundle *iRateBundle = nil;
 iRateView *iRateInstance;
 
 
@@ -117,7 +118,14 @@ iRateView *iRateInstance;
 
 -(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate{
     if (!iRateBundle) {
-        return NSLocalizedString(key,alternate);
+        static NSBundle *bundle = nil;
+        if (bundle == nil)
+        {
+            NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
+            bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
+        }
+        alternate = [bundle localizedStringForKey:key value:alternate table:nil];
+        return [[NSBundle mainBundle] localizedStringForKey:key value:alternate table:nil];
     }
     
     /*static NSBundle *bundle = nil;

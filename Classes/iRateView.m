@@ -692,7 +692,8 @@ float distance = 10.0;
             }
             
         }
-        [mailController setMessageBody:[NSString stringWithFormat:@"Здравствуйте, %@\n\n\nУстройство:\n %@ \n iOS %@ \n%@ %@", name_company, seriaDevice, [[UIDevice currentDevice] systemVersion],[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"], version] isHTML:NO];
+        
+        [mailController setMessageBody:[NSString stringWithFormat:[self localizedStringForKey:@"iRateView_supportEmail_text" withDefault:@"Здравствуйте, \n\n\nСпасибо!\n\nУстройство:\n %@ \n iOS %@ \nВерсия %@"],seriaDevice,[[UIDevice currentDevice] systemVersion],version] isHTML:NO];
         
         [[self parentViewController] presentViewController:mailController animated:YES completion:nil];
         
