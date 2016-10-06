@@ -103,7 +103,7 @@ static NSString *id_application_key = @"trackIdKey";
     }
     
     alphaView = [[UIView alloc] initWithFrame:self.frame];
-    
+    alphaView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     
     if (IOS8_AND_LATER) {
         if (!UIAccessibilityIsReduceTransparencyEnabled()) {
@@ -128,11 +128,11 @@ static NSString *id_application_key = @"trackIdKey";
     
     [self addSubview:alphaView];
     
-    
     UIView *rate_v = [self rateView];
     rate_v.center = self.center;
+    rate_v.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
     
-    alphaView.autoresizingMask = UIViewAutoresizingNone;
+    //alphaView.autoresizingMask = UIViewAutoresizingNone;
     [self addSubview:rate_v];
     [self setRate:cur_stars];
 }

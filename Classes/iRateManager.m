@@ -98,7 +98,7 @@ iRateView *iRateInstance;
     if (!iRateInstance) {
         iRateInstance = [[iRateView alloc] initWithFrame:frontWindow.bounds];
     }
-    
+    iRateInstance.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
     [frontWindow addSubview:iRateInstance];
     
     [iRateInstance setNeedsDisplay];
