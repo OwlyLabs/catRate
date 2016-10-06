@@ -62,7 +62,11 @@ iRateView *iRateInstance;
 
 -(void)hideRate{
     if (iRateInstance) {
-        [iRateInstance removeFromSuperview];
+        [UIView animateWithDuration:0.1 animations:^{
+            iRateInstance.alpha = 0;
+        } completion:^(BOOL finished) {
+            [iRateInstance removeFromSuperview];
+        }];
     }
 }
 
@@ -91,6 +95,7 @@ iRateView *iRateInstance;
     [self checkIRate];
 }
 
+
 -(void)checkIRate{
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
     [frontWindow setBackgroundColor:[UIColor clearColor]];
@@ -98,10 +103,14 @@ iRateView *iRateInstance;
     if (!iRateInstance) {
         iRateInstance = [[iRateView alloc] initWithFrame:frontWindow.bounds];
     }
+    iRateInstance.hidden = YES;
     iRateInstance.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    [frontWindow addSubview:iRateInstance];
     
-    [iRateInstance setNeedsDisplay];
+    [frontWindow addSubview:iRateInstance];
+    [iRateInstance showView];
+    
+    
+    //[iRateInstance setNeedsDisplay];
 }
 
 -(void)eventAfterLaunch{

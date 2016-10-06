@@ -79,40 +79,34 @@ static NSString *id_application_key = @"trackIdKey";
     }
 }
 
-
-
-- (void)drawRect:(CGRect)rect{
+UIVisualEffectView *blurEffectView;
+UIBlurEffect *blurEffect;
+-(void)showView{
     [self clearView];
-    [self setAlpha:0];
-    [UIView animateWithDuration:0.1 animations:^{
-        [self setAlpha:1];
-    }];
-    
+    self.alpha = 0;
+    self.hidden = NO;
     cur_stars = 0;
-    
     self.backgroundColor = [UIColor clearColor];
-    
-    
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-        if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
-            
-            self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
-        }else{
-            self.frame = CGRectMake(0, 0, MainScreenWidht, MainScreenHeight);
-        }
-    }
+    /*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
+     if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
+     
+     self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
+     }else{
+     self.frame = CGRectMake(0, 0, MainScreenWidht, MainScreenHeight);
+     }
+     }*/
     
     alphaView = [[UIView alloc] initWithFrame:self.frame];
     alphaView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
-    
+    alphaView.alpha = 1;
     if (IOS8_AND_LATER) {
         if (!UIAccessibilityIsReduceTransparencyEnabled()) {
             alphaView.backgroundColor = [UIColor clearColor];
-            UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-            UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+            blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+            blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
             blurEffectView.frame = alphaView.bounds;
             blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-            blurEffectView.alpha = 1;
+            blurEffectView.alpha = 1.0;
             [alphaView addSubview:blurEffectView];
         } else {
             alphaView.backgroundColor = [UIColor blackColor];
@@ -123,19 +117,24 @@ static NSString *id_application_key = @"trackIdKey";
         alphaView.alpha = 0.4;
     }
     
-    
-    alphaView.frame = self.frame;
-    
     [self addSubview:alphaView];
     
     UIView *rate_v = [self rateView];
     rate_v.center = self.center;
     rate_v.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleTopMargin|UIViewAutoresizingFlexibleBottomMargin;
     
-    //alphaView.autoresizingMask = UIViewAutoresizingNone;
     [self addSubview:rate_v];
     [self setRate:cur_stars];
+    
+    
+    [UIView animateWithDuration:0.1 animations:^{
+        self.alpha = 1.0;
+    } completion:^(BOOL finished) {
+        
+    }];
+    
 }
+
 
 - (void) didRotate:(NSNotification *)notification {
     
@@ -566,7 +565,11 @@ float distance = 10.0;
     if (vc) {
         [self supportMail];
     }
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.1 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 
@@ -603,7 +606,11 @@ float distance = 10.0;
             }
         }
     }];
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.1 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 
@@ -612,7 +619,11 @@ float distance = 10.0;
     if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userDeny)]) {
         [[iRateManager sharedInstance].delegate userDeny];
     }
-    [self removeFromSuperview];
+    [UIView animateWithDuration:0.1 animations:^{
+        self.alpha = 0;
+    } completion:^(BOOL finished) {
+        [self removeFromSuperview];
+    }];
 }
 
 
@@ -648,7 +659,7 @@ float distance = 10.0;
         [mailController setToRecipients:recipients];
         [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS)",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
         
-        UIColor *tintColor = [UIColor colorWithHex:@"#27afc3" alpha:1.0];
+        UIColor *tintColor = [UIColor colorWithHex:@"#017afd" alpha:1.0];
         if ([cur_params objectForKey:@"tintColor"]) {
             if (![[cur_params objectForKey:@"tintColor"] isEqual:[NSNull null]]) {
                 if ([cur_params objectForKey:@"tintColor"]) {
