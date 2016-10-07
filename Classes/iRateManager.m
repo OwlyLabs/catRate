@@ -95,7 +95,6 @@ iRateView *iRateInstance;
     [self checkIRate];
 }
 
-
 -(void)checkIRate{
     UIWindow *frontWindow = [[[UIApplication sharedApplication] delegate] window];
     [frontWindow setBackgroundColor:[UIColor clearColor]];
@@ -108,8 +107,6 @@ iRateView *iRateInstance;
     
     [frontWindow addSubview:iRateInstance];
     [iRateInstance showView];
-    
-    
     //[iRateInstance setNeedsDisplay];
 }
 

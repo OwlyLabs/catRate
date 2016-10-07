@@ -12,4 +12,5 @@
 #import <MessageUI/MFMailComposeViewController.h>
 @interface iRateView : UIView
 @property (nonatomic,retain) UIViewController* parentVC;
+-(void)showView;
 @end

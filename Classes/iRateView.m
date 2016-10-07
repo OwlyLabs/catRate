@@ -88,13 +88,13 @@ UIBlurEffect *blurEffect;
     cur_stars = 0;
     self.backgroundColor = [UIColor clearColor];
     /*if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
-     if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
-     
-     self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
-     }else{
-     self.frame = CGRectMake(0, 0, MainScreenWidht, MainScreenHeight);
-     }
-     }*/
+        if ([[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortrait || [[UIApplication sharedApplication] statusBarOrientation] == UIDeviceOrientationPortraitUpsideDown) {
+            
+            self.frame = CGRectMake(0, 0, MainScreenHeight, MainScreenWidht);
+        }else{
+            self.frame = CGRectMake(0, 0, MainScreenWidht, MainScreenHeight);
+        }
+    }*/
     
     alphaView = [[UIView alloc] initWithFrame:self.frame];
     alphaView.autoresizingMask = UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth;
