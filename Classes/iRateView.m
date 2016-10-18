@@ -561,9 +561,13 @@ float distance = 10.0;
         [[iRateManager sharedInstance].delegate userWriteSupport];
     }
     
-    UIViewController *vc = [self parentViewController];
-    if (vc) {
-        [self supportMail];
+    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(customActionSupport)]) {
+        [[iRateManager sharedInstance].delegate customActionSupport];
+    }else{
+        UIViewController *vc = [self parentViewController];
+        if (vc) {
+            [self supportMail];
+        }
     }
     [UIView animateWithDuration:0.1 animations:^{
         self.alpha = 0;

@@ -12,6 +12,7 @@
 -(void)userDeny;
 -(void)userWriteSupport;
 -(void)userRated:(int)stars;
+-(void)customActionSupport;
 @end
 
 @interface iRateManager : NSObject
