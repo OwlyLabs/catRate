@@ -119,7 +119,17 @@ iRateView *iRateInstance;
 -(void)setLanguage:(NSString *)l
 {
     NSString *path = [[NSBundle mainBundle] pathForResource:l ofType:@"lproj" inDirectory:@"iRateCat.bundle"];
-    iRateBundle = [NSBundle bundleWithPath:(!path)?[NSBundle mainBundle]:path];
+    if (path) {
+        iRateBundle = [NSBundle bundleWithPath:path];
+    }else{
+        // try get en
+        path = [[NSBundle mainBundle] pathForResource:@"en" ofType:@"lproj" inDirectory:@"iRateCat.bundle"];
+        if (path) {
+            iRateBundle = [NSBundle bundleWithPath:path];
+        }else{
+            iRateBundle = [NSBundle mainBundle];
+        }
+    }
 }
 
 -(NSString *)getLoclizedStringWithKey:(NSString *)key alter:(NSString *)alternate{

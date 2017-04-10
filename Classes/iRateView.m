@@ -473,6 +473,7 @@ float distance = 10.0;
         cancelBtn = [self getCancelButtonForCover:cover];
         [cover addSubview:cancelBtn];
     }
+    [cancelBtn setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(0, CGRectGetMaxY(separ.frame) + 5, cover.frame.size.width, 32.0)];
     
     
@@ -542,6 +543,7 @@ float distance = 10.0;
         cancelBtn = [self getCancelButtonForCover:cover];
         [cover addSubview:cancelBtn];
     }
+    [cancelBtn setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(0, CGRectGetMaxY(separ.frame) + 4, cover.frame.size.width, 50.0)];
     
     
