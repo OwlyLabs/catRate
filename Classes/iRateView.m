@@ -11,15 +11,7 @@
 #import "UIColor+HEX.h"
 #import "iRateManager.h"
 
-#define MainScreenWidht (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.width:[UIScreen mainScreen].bounds.size.height)
 
-#define MainScreenHeight (([UIScreen mainScreen].bounds.size.width > [UIScreen mainScreen].bounds.size.height)?[UIScreen mainScreen].bounds.size.height:[UIScreen mainScreen].bounds.size.width)
-
-#define RectWidth(f)                        f.size.width
-#define RectHeight(f)                       f.size.height
-#define RectSetOrigin(f, x, y)              CGRectMake(x, y, RectWidth(f), RectHeight(f))
-#define IS_IPAD (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-#define IOS8_AND_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
 
 typedef NS_ENUM (NSInteger, popup_state){
     popup_state_empty = 1,
@@ -44,15 +36,6 @@ UCButton *cancelBtn;
 
 popup_state stateAlert;
 int cur_stars = 0;
-
-
-static NSString *id_application_key = @"trackIdKey";
-
-
-- (UIViewController *)parentViewController {
-    return [UIApplication sharedApplication].keyWindow.rootViewController;
-}
-
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -169,7 +152,9 @@ UIBlurEffect *blurEffect;
         case popup_state_empty:{
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, 70)];
             
-            NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0]}];
+            
+            
+            NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0]}];
             
             UILabel *like_app = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?-4.5:0, view.frame.size.width, (IS_IPAD)?80:50)];
             
@@ -189,7 +174,7 @@ UIBlurEffect *blurEffect;
             
             
             
-            thanksTitle.text = [self localizedStringForKey:@"iRateView_what_happened" withDefault:@"Что случилось?"];
+            thanksTitle.text = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_what_happened" withDefault:@"Что случилось?"];
             thanksTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
             thanksTitle.textAlignment = NSTextAlignmentCenter;
             thanksTitle.numberOfLines = 1;
@@ -199,7 +184,7 @@ UIBlurEffect *blurEffect;
             
             
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
             
             UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
             [thanksTitle2 setAttributedText:atrStr];
@@ -216,7 +201,7 @@ UIBlurEffect *blurEffect;
             UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, 70)];
             UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?9:0, view.frame.size.width, (IS_IPAD)?30:25)];
             
-            thanksTitle.text = [self localizedStringForKey:@"iRateView_good" withDefault:@"Отлично! Спасибо!"];
+            thanksTitle.text = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_good" withDefault:@"Отлично! Спасибо!"];
             thanksTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
             thanksTitle.textAlignment = NSTextAlignmentCenter;
             thanksTitle.numberOfLines = 1;
@@ -224,7 +209,7 @@ UIBlurEffect *blurEffect;
             [view addSubview:thanksTitle];
             
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [self localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
             
             UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
             
@@ -367,19 +352,19 @@ float distance = 10.0;
             
             
             
-            [action_button setTitle:[self localizedStringForKey:@"iRateView_rate_app" withDefault:@"Оцените приложение"] forState:UIControlStateNormal];
+            [action_button setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_rate_app" withDefault:@"Оцените приложение"] forState:UIControlStateNormal];
             action_button.backgroundColor = [UIColor colorWithHex:@"e5e8e8" alpha:1.0];
             [action_button setTitleColor:[UIColor colorWithHex:@"5d7185" alpha:1.0] forState:UIControlStateNormal];
             action_button.userInteractionEnabled = NO;
             break;}
         case popup_state_bad_choise:{
             
-            [action_button setTitle:[self localizedStringForKey:@"iRateView_write_support" withDefault:@"Написать разработчику"] forState:UIControlStateNormal];
+            [action_button setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_write_support" withDefault:@"Написать разработчику"] forState:UIControlStateNormal];
             [action_button setBackgroundImage:[UIImage imageNamed:@"rate_action_btn_bg"] forState:UIControlStateNormal];
             [action_button setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
             break;}
         case popup_state_good_choise:{
-            [action_button setTitle:[self localizedStringForKey:@"iRateView_rate" withDefault:@"Оставить отзыв"] forState:UIControlStateNormal];
+            [action_button setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_rate" withDefault:@"Оставить отзыв"] forState:UIControlStateNormal];
             [action_button setBackgroundImage:[UIImage imageNamed:@"rate_action_btn_bg"] forState:UIControlStateNormal];
             [action_button setBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateHighlighted];
             break;}
@@ -401,7 +386,7 @@ float distance = 10.0;
     [cancel_button setFrame:CGRectMake(0, 0, cover.frame.size.width, (IS_IPAD)?50:32)];
     [cancel_button addTarget:self action:@selector(cancelAction) forControlEvents:UIControlEventTouchUpInside];
     
-    [cancel_button setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
+    [cancel_button setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:1.0] forState:UIControlStateNormal];
     [cancel_button setTitleColor:[UIColor colorWithHex:@"515151" alpha:0.8] forState:UIControlStateHighlighted];
     
@@ -473,7 +458,7 @@ float distance = 10.0;
         cancelBtn = [self getCancelButtonForCover:cover];
         [cover addSubview:cancelBtn];
     }
-    [cancelBtn setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
+    [cancelBtn setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(0, CGRectGetMaxY(separ.frame) + 5, cover.frame.size.width, 32.0)];
     
     
@@ -543,7 +528,7 @@ float distance = 10.0;
         cancelBtn = [self getCancelButtonForCover:cover];
         [cover addSubview:cancelBtn];
     }
-    [cancelBtn setTitle:[self localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
+    [cancelBtn setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_cancel" withDefault:@"Отмена"] forState:UIControlStateNormal];
     [cancelBtn setFrame:CGRectMake(0, CGRectGetMaxY(separ.frame) + 4, cover.frame.size.width, 50.0)];
     
     
@@ -558,19 +543,8 @@ float distance = 10.0;
 #pragma mark - button action
 
 -(void)writeDeveloper{
-    [[iRateMind sharedInstance] userWriteSupport];
-    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userWriteSupport)]) {
-        [[iRateManager sharedInstance].delegate userWriteSupport];
-    }
+    [[iRateMind sharedInstance] userWriteSupportAction];
     
-    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(customActionSupport)]) {
-        [[iRateManager sharedInstance].delegate customActionSupport];
-    }else{
-        UIViewController *vc = [self parentViewController];
-        if (vc) {
-            [self supportMail];
-        }
-    }
     [UIView animateWithDuration:0.1 animations:^{
         self.alpha = 0;
     } completion:^(BOOL finished) {
@@ -581,37 +555,8 @@ float distance = 10.0;
 
 
 -(void)rateApplication{
-    [[iRateMind sharedInstance] userRated];
-    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userRated:)]) {
-        [[iRateManager sharedInstance].delegate userRated:cur_stars];
-    }
+    [[iRateMind sharedInstance] userRateAction:cur_stars];
     
-    [self checkApplicationID:^(bool complate) {
-        if (complate) {
-            if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
-                
-                NSString *URLString;
-                NSString *iRateiOS7AppStoreURLFormat = @"itms-apps://itunes.apple.com/app/id%@";
-                NSString *iRateiOSAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@";
-                
-                float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
-                if (iOSVersion >= 7.0f && iOSVersion < 7.1f)
-                {
-                    URLString = iRateiOS7AppStoreURLFormat;
-                }
-                else
-                {
-                    URLString = iRateiOSAppStoreURLFormat;
-                }
-                NSURL *ratingsURL = [NSURL URLWithString:[NSString stringWithFormat:URLString, [[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]]];
-                
-                if ([[UIApplication sharedApplication] canOpenURL:ratingsURL])
-                {
-                    [[UIApplication sharedApplication] openURL:ratingsURL];
-                }
-            }
-        }
-    }];
     [UIView animateWithDuration:0.1 animations:^{
         self.alpha = 0;
     } completion:^(BOOL finished) {
@@ -621,302 +566,13 @@ float distance = 10.0;
 
 
 -(void)cancelAction{
-    [[iRateMind sharedInstance] userDeny];
-    if ([[iRateManager sharedInstance].delegate respondsToSelector:@selector(userDeny)]) {
-        [[iRateManager sharedInstance].delegate userDeny];
-    }
+    [[iRateMind sharedInstance] userDenyAction];
     [UIView animateWithDuration:0.1 animations:^{
         self.alpha = 0;
     } completion:^(BOOL finished) {
         [self removeFromSuperview];
     }];
 }
-
-
-#pragma mark - MFMailComposeViewController
-
-- (void)supportMail{
-    if ([MFMailComposeViewController canSendMail]) {
-        NSDictionary *cur_params = [[iRateManager sharedInstance] getSupportMailParams];
-        
-        
-        
-        
-        NSMutableArray *recipients = [NSMutableArray new];
-        if ([cur_params objectForKey:@"recipients"]) {
-            if ([[cur_params objectForKey:@"recipients"] isKindOfClass:[NSArray class]]) {
-                for (NSString *recipient in [cur_params objectForKey:@"recipients"]) {
-                    if (![recipient isEqual:[NSNull null]]) {
-                        if (recipient) {
-                            [recipients addObject:recipient];
-                        }
-                    }
-                }
-            }else{
-                if ([[cur_params objectForKey:@"recipients"] isKindOfClass:[NSString class]]) {
-                    [recipients addObject:[cur_params objectForKey:@"recipients"]];
-                }
-            }
-        }
-        
-        
-        MFMailComposeViewController* mailController = [[MFMailComposeViewController alloc] init];
-        mailController.mailComposeDelegate = (id)self;
-        [mailController setToRecipients:recipients];
-        [mailController setSubject:[NSString stringWithFormat:@"%@ (iOS)",[[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleDisplayName"] ]];
-        
-        UIColor *tintColor = [UIColor colorWithHex:@"#017afd" alpha:1.0];
-        if ([cur_params objectForKey:@"tintColor"]) {
-            if (![[cur_params objectForKey:@"tintColor"] isEqual:[NSNull null]]) {
-                if ([cur_params objectForKey:@"tintColor"]) {
-                    if ([UIColor colorWithHex:[cur_params objectForKey:@"tintColor"] alpha:1.0]) {
-                        tintColor = [UIColor colorWithHex:[cur_params objectForKey:@"tintColor"] alpha:1.0];
-                    }
-                }
-            }
-            
-        }
-        
-        [mailController.navigationBar setTintColor:tintColor];
-        
-        NSMutableString *seriaDevice = [[NSMutableString alloc] initWithCapacity:10];
-        
-        NSString *deviceType;
-        struct utsname systemInfo;
-        uname(&systemInfo);
-        deviceType = [NSString stringWithCString:systemInfo.machine
-                                        encoding:NSUTF8StringEncoding];
-        
-        [seriaDevice appendString:deviceType];
-        
-        [seriaDevice replaceOccurrencesOfString:@"," withString:@"."
-                                        options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
-        [seriaDevice replaceOccurrencesOfString:@"iPhone" withString:@"iPhone "
-                                        options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
-        [seriaDevice replaceOccurrencesOfString:@"iPod" withString:@"iPod "
-                                        options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
-        [seriaDevice replaceOccurrencesOfString:@"iPad" withString:@"iPad "
-                                        options:NSCaseInsensitiveSearch range:NSMakeRange(0, seriaDevice.length)];
-        NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-        
-        
-        NSString *name_company = @"";
-        if ([cur_params objectForKey:@"nameCompany"]) {
-            if (![[cur_params objectForKey:@"nameCompany"] isEqual:[NSNull null]]) {
-                if ([cur_params objectForKey:@"nameCompany"]) {
-                    name_company = [cur_params objectForKey:@"nameCompany"];
-                }
-            }
-            
-        }
-        
-        [mailController setMessageBody:[NSString stringWithFormat:[self localizedStringForKey:@"iRateView_supportEmail_text" withDefault:@"Здравствуйте, \n\n\nСпасибо!\n\nУстройство:\n %@ \n iOS %@ \nВерсия %@"],seriaDevice,[[UIDevice currentDevice] systemVersion],version] isHTML:NO];
-        
-        [[self parentViewController] presentViewController:mailController animated:YES completion:nil];
-        
-    }else {
-        [[[UIAlertView alloc] initWithTitle:@"" message:[self localizedStringForKey:@"iRateView_error_email_settings" withDefault:@"Для отправки сообщения необходимо авторизировать почтовый ящик"] delegate:self cancelButtonTitle:[self localizedStringForKey:@"iRateView_support_close" withDefault:@"Закрыть"] otherButtonTitles:nil] show];
-    }
-}
-
-
-- (void)mailComposeController:(MFMailComposeViewController*)controller
-          didFinishWithResult:(MFMailComposeResult)result
-                        error:(NSError*)error;
-{
-    [[self parentViewController] dismissViewControllerAnimated:YES completion:nil];
-}
-
-
-#pragma mark -
-
-
-#pragma mark - iTunes hepler
-
--(void)checkApplicationID:(void(^)(bool complate))complated{
-    
-    if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
-        if (complated) {
-            complated(YES);
-            return;
-        }
-    }
-    
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        
-        //get country
-        NSString *appStoreCountry = [(NSLocale *)[NSLocale currentLocale] objectForKey:NSLocaleCountryCode];
-        if ([appStoreCountry isEqualToString:@"150"])
-        {
-            appStoreCountry = @"eu";
-        }
-        else if ([[appStoreCountry stringByReplacingOccurrencesOfString:@"[A-Za-z]{2}" withString:@"" options:NSRegularExpressionSearch range:NSMakeRange(0, 2)] length])
-        {
-            appStoreCountry = @"us";
-        }
-        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://itunes.apple.com/%@/lookup?bundleId=%@",appStoreCountry,[[NSBundle mainBundle] bundleIdentifier]]]];
-        
-        NSURLResponse * response = nil;
-        NSError * error = nil;
-        NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&error];
-        
-        dispatch_sync(dispatch_get_main_queue(), ^{
-            if (data) {
-                NSError *error = nil;
-                
-                id json = [NSJSONSerialization
-                           JSONObjectWithData:data
-                           options:kNilOptions
-                           error:nil];
-                if ([NSJSONSerialization class])
-                {
-                    json = [[NSJSONSerialization JSONObjectWithData:data options:(NSJSONReadingOptions)0 error:&error][@"results"] lastObject];
-                }
-                else
-                {
-                    //convert to string
-                    json = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-                }
-                
-                
-                NSString *bundleID = [self valueForKey:@"bundleId" inJSON:json];
-                if (bundleID)
-                {
-                    if ([bundleID isEqualToString:[[NSBundle mainBundle] bundleIdentifier]])
-                    {
-                        [[NSUserDefaults standardUserDefaults] setObject:[self valueForKey:@"trackId" inJSON:json] forKey:id_application_key];
-                        
-                        if (complated) {
-                            complated(YES);
-                            return;
-                        }
-                    }
-                }
-                
-                
-                if (complated) {
-                    complated(NO);
-                    return;
-                }
-                
-                
-                
-            }else{
-                if (complated) {
-                    complated(NO);
-                    return;
-                }
-            }
-        });
-        
-        
-    });
-}
-
-- (NSString *)valueForKey:(NSString *)key inJSON:(id)json
-{
-    if ([json isKindOfClass:[NSString class]])
-    {
-        //use legacy parser
-        NSRange keyRange = [json rangeOfString:[NSString stringWithFormat:@"\"%@\"", key]];
-        if (keyRange.location != NSNotFound)
-        {
-            NSInteger start = keyRange.location + keyRange.length;
-            NSRange valueStart = [json rangeOfString:@":" options:(NSStringCompareOptions)0 range:NSMakeRange(start, [(NSString *)json length] - start)];
-            if (valueStart.location != NSNotFound)
-            {
-                start = valueStart.location + 1;
-                NSRange valueEnd = [json rangeOfString:@"," options:(NSStringCompareOptions)0 range:NSMakeRange(start, [(NSString *)json length] - start)];
-                if (valueEnd.location != NSNotFound)
-                {
-                    NSString *value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
-                    value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    while ([value hasPrefix:@"\""] && ![value hasSuffix:@"\""])
-                    {
-                        if (valueEnd.location == NSNotFound)
-                        {
-                            break;
-                        }
-                        NSInteger newStart = valueEnd.location + 1;
-                        valueEnd = [json rangeOfString:@"," options:(NSStringCompareOptions)0 range:NSMakeRange(newStart, [(NSString *)json length] - newStart)];
-                        value = [json substringWithRange:NSMakeRange(start, valueEnd.location - start)];
-                        value = [value stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-                    }
-                    
-                    value = [value stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"\""]];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\\\" withString:@"\\"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\/" withString:@"/"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\\"" withString:@"\""];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\n" withString:@"\n"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\r" withString:@"\r"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\t" withString:@"\t"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\f" withString:@"\f"];
-                    value = [value stringByReplacingOccurrencesOfString:@"\\b" withString:@"\f"];
-                    
-                    while (YES)
-                    {
-                        NSRange unicode = [value rangeOfString:@"\\u"];
-                        if (unicode.location == NSNotFound || unicode.location + unicode.length == 0)
-                        {
-                            break;
-                        }
-                        
-                        uint32_t c = 0;
-                        NSString *hex = [value substringWithRange:NSMakeRange(unicode.location + 2, 4)];
-                        NSScanner *scanner = [NSScanner scannerWithString:hex];
-                        [scanner scanHexInt:&c];
-                        
-                        if (c <= 0xffff)
-                        {
-                            value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C", (unichar)c]];
-                        }
-                        else
-                        {
-                            //convert character to surrogate pair
-                            uint16_t x = (uint16_t)c;
-                            uint16_t u = (c >> 16) & ((1 << 5) - 1);
-                            uint16_t w = (uint16_t)u - 1;
-                            unichar high = 0xd800 | (w << 6) | x >> 10;
-                            unichar low = (uint16_t)(0xdc00 | (x & ((1 << 10) - 1)));
-                            
-                            value = [value stringByReplacingCharactersInRange:NSMakeRange(unicode.location, 6) withString:[NSString stringWithFormat:@"%C%C", high, low]];
-                        }
-                    }
-                    return value;
-                }
-            }
-        }
-    }
-    else
-    {
-        return json[key];
-    }
-    return nil;
-}
-
-
-#pragma mark -
-
-
-#pragma mark - localize
-
-
-- (NSString *)localizedStringForKey:(NSString *)key withDefault:(NSString *)defaultString
-{
-    return [[iRateManager sharedInstance] getLoclizedStringWithKey:key alter:defaultString];
-    
-    /*static NSBundle *bundle = nil;
-     if (bundle == nil)
-     {
-     NSString *bundlePath = [[NSBundle mainBundle] pathForResource:@"iRateCat" ofType:@"bundle"];
-     bundle = [NSBundle bundleWithPath:bundlePath] ?: [NSBundle mainBundle];
-     }
-     defaultString = [bundle localizedStringForKey:key value:defaultString table:nil];
-     return [[NSBundle mainBundle] localizedStringForKey:key value:defaultString table:nil];*/
-}
-
-#pragma mark -
-
 
 
 
