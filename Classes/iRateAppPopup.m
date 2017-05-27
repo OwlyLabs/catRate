@@ -183,6 +183,10 @@ typedef NS_ENUM (NSInteger, popup_state){
     
     [header_view removeFromSuperview];
     header_view = [self headerView:stateAlert forCover:coverView];
+    
+    //header_view.backgroundColor = [UIColor redColor];
+    
+    
     [coverView addSubview:header_view];
     
     //
@@ -206,7 +210,9 @@ typedef NS_ENUM (NSInteger, popup_state){
     actionBtn = [self getActionButtonForCover:coverView andState:stateAlert];
     [coverView addSubview:actionBtn];
     
-    [actionBtn setFrame:CGRectMake(20, CGRectGetMaxY(star_rate_view.frame) + 17, coverView.frame.size.width - 40, 41.0)];
+    [actionBtn setFrame:CGRectMake(20, CGRectGetMaxY(star_rate_view.frame) + 17, actionBtn.frame.size.width, actionBtn.frame.size.height)];
+    
+    actionBtn.center = CGPointMake(coverView.frame.size.width/2, actionBtn.center.y);
     
     
     switch (stateAlert) {
@@ -261,7 +267,7 @@ typedef NS_ENUM (NSInteger, popup_state){
     
     switch (state) {
         case popup_state_empty:{
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, 70)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, (IS_IPAD)?100:70)];
             
             NSMutableAttributedString *stringForRecom = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_do_you_like" withDefault:@"Вам нравится приложение?"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_big_title, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30.0:20.0]}];
             
@@ -277,11 +283,8 @@ typedef NS_ENUM (NSInteger, popup_state){
             return view;
             break;}
         case popup_state_bad_choise:{
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, (IS_IPAD)?19+9:19, cover.frame.size.width - 40, 70+((IS_IPAD)?-9:0))];
-            UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, view.frame.size.width, (IS_IPAD)?30:25)];
-            
-            
-            
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, (IS_IPAD)?100:70)];
+            UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?9:0, view.frame.size.width, (IS_IPAD)?30:25)];
             
             thanksTitle.text = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_what_happened" withDefault:@"Что случилось?"];
             thanksTitle.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?30:20.0];
@@ -290,13 +293,20 @@ typedef NS_ENUM (NSInteger, popup_state){
             thanksTitle.textColor = [UIColor colorWithHex:@"189395" alpha:1.0];
             [view addSubview:thanksTitle];
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
             
-            UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
+            
+            NSString *descriptionText = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_what_please_write" withDefault:@"Пожалуйста, напишите, как мы\nможем улучшить приложение"];
+            if (IS_IPAD) {
+                descriptionText = [descriptionText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+            }
+            
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString:descriptionText  attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?20:15.0]}];
+            
+            UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame), view.frame.size.width, (IS_IPAD)?60:45)];
             [thanksTitle2 setAttributedText:atrStr];
             
             
-            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0];
+            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?20:15.0];
             thanksTitle2.textAlignment = NSTextAlignmentCenter;
             thanksTitle2.numberOfLines = 2;
             thanksTitle2.textColor = [UIColor colorWithHex:@"5d7185" alpha:1.0];
@@ -304,7 +314,7 @@ typedef NS_ENUM (NSInteger, popup_state){
             return view;
             break;}
         case popup_state_good_choise:{
-            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, 70)];
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(20, 19, cover.frame.size.width - 40, (IS_IPAD)?100:70)];
             UILabel *thanksTitle = [[UILabel alloc] initWithFrame:CGRectMake(0, (IS_IPAD)?9:0, view.frame.size.width, (IS_IPAD)?30:25)];
             
             thanksTitle.text = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_good" withDefault:@"Отлично! Спасибо!"];
@@ -315,13 +325,17 @@ typedef NS_ENUM (NSInteger, popup_state){
             [view addSubview:thanksTitle];
             
             
-            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString: [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"] attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0]}];
+             NSString *descriptionText = [[iRateMind sharedInstance] localizedStringForKey:@"iRateView_support" withDefault:@"Поддержите приложение,\nоставьте отзыв в App Store"];
+            if (IS_IPAD) {
+                descriptionText = [descriptionText stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+            }
+            NSMutableAttributedString *atrStr = [[NSMutableAttributedString alloc] initWithString:descriptionText  attributes: @{NSParagraphStyleAttributeName : paragraphStyle_2, NSFontAttributeName : [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?20:15.0]}];
             
-            UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame)+((IS_IPAD)?2.5:0), view.frame.size.width, (IS_IPAD)?60:45)];
+            UILabel *thanksTitle2 = [[UILabel alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(thanksTitle.frame), view.frame.size.width, (IS_IPAD)?60:45)];
             
             [thanksTitle2 setAttributedText:atrStr];
             
-            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?22:15.0];
+            thanksTitle2.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?20:15.0];
             thanksTitle2.textAlignment = NSTextAlignmentCenter;
             thanksTitle2.numberOfLines = 3;
             thanksTitle2.textColor = [UIColor colorWithHex:@"5d7185" alpha:1.0];
@@ -388,7 +402,9 @@ typedef NS_ENUM (NSInteger, popup_state){
 -(UIButton*)getActionButtonForCover:(UIView*)cover andState:(popup_state)state{
     UIButton *action_button = [UIButton buttonWithType:UIButtonTypeCustom];
     float margin = (IS_IPAD)?79:27.0;
-    [action_button setFrame:CGRectMake(margin, 0, cover.frame.size.width - margin*2, 41)];
+    float max_width = (IS_IPAD)?380:280.0;
+    
+    [action_button setFrame:CGRectMake(margin, 0, cover.frame.size.width - margin*2, (IS_IPAD)?48:41)];
     switch (state) {
         case popup_state_empty:{
             [action_button setTitle:[[iRateMind sharedInstance] localizedStringForKey:@"iRateView_rate_app" withDefault:@"Оцените приложение"] forState:UIControlStateNormal];
@@ -411,8 +427,15 @@ typedef NS_ENUM (NSInteger, popup_state){
             break;
     }
     
-    action_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?27:18.0];
+    
+    
+    action_button.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue" size:(IS_IPAD)?25:18.0];
     //
+    
+    if (CGRectGetWidth(action_button.frame) > max_width) {
+        action_button.frame = RectSetWidth(action_button.frame, max_width);
+    }
+    
     action_button.layer.cornerRadius = 5.0;
     action_button.clipsToBounds = YES;
     return action_button;
