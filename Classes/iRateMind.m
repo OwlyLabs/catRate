@@ -249,11 +249,11 @@ static iRateMind *instance = nil;
             if ([[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]) {
                 
                 NSString *URLString;
-                NSString *iRateiOS7AppStoreURLFormat = @"itms-apps://itunes.apple.com/app/id%@";
+                NSString *iRateiOS7AppStoreURLFormat = @"itms-apps://itunes.apple.com/app/id%@?action=write-review&mt=8";
                 NSString *iRateiOSAppStoreURLFormat = @"itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=%@";
                 
                 float iOSVersion = [[UIDevice currentDevice].systemVersion floatValue];
-                if (iOSVersion >= 7.0f && iOSVersion < 7.1f)
+                if ((iOSVersion >= 7.0f && iOSVersion < 8.0f) || iOSVersion >= 11.0)
                 {
                     URLString = iRateiOS7AppStoreURLFormat;
                 }
@@ -261,12 +261,16 @@ static iRateMind *instance = nil;
                 {
                     URLString = iRateiOSAppStoreURLFormat;
                 }
+                
                 NSURL *ratingsURL = [NSURL URLWithString:[NSString stringWithFormat:URLString, [[NSUserDefaults standardUserDefaults] objectForKey:id_application_key]]];
                 
                 if ([[UIApplication sharedApplication] canOpenURL:ratingsURL])
                 {
                     [[UIApplication sharedApplication] openURL:ratingsURL];
                 }
+                
+                
+                
             }
         }
     }];
